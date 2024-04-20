@@ -1,7 +1,7 @@
-import { Location } from "./Location";
+import { TaskType } from "./TaskType";
 
 export abstract class Task {
-    location: Location;
+    taskType: TaskType;
     description: string | undefined;
     isPresent: boolean;
     hoursForPreparing: number | undefined;
@@ -13,17 +13,17 @@ export abstract class Task {
     equipmentWearCost: number | undefined;
     softwareCost: number | undefined;
     transportCost: number | undefined;
-    totalPrice: number;
+    totalPrice: number | undefined;
 
-    constructor(location: Location, description: string | undefined = undefined, isPresent: boolean = true, totalPrice: number = 0) {
-        this.location = location;
+    constructor(taskType: TaskType, description: string | undefined = undefined, isPresent: boolean = true) {
+        this.taskType = taskType;
         this.description = description;
         this.isPresent = isPresent;
-        this.totalPrice = totalPrice;
     }
 }
 
 export class PhotoTask extends Task {
+    photosMade: number | undefined;
     photosDelivered: number | undefined;
 }
 

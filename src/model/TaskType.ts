@@ -1,4 +1,4 @@
-export enum Location {
+export enum TaskType {
     HOME = "Acasă",
     PHOTO_SHOOT = "Ședință foto",
     MARITAL_STATUS = "Stare civilă",
