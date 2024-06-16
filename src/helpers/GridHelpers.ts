@@ -9,7 +9,7 @@ const isNumber = (value: object) => typeof value === "number" && !isNaN(value);
 
 export const decimalValueFormatter: ValueFormatterFunc = (params: ValueFormatterParams) =>
     isNumber(params.value)
-        ? Number(params.value.toFixed(1)) == Number(params.value.toFixed()) ? params.value.toFixed() : params.value.toFixed(1).replace(".", ",")
+        ? Number(params.value.toFixed(1)) === Number(params.value.toFixed()) ? params.value.toFixed() : params.value.toFixed(1).replace(".", ",")
         : params.value
 
 export const integerValueFormatter: ValueFormatterFunc = (params: ValueFormatterParams) => formatInteger(params.value)

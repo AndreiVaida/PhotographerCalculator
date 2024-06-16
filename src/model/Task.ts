@@ -5,14 +5,16 @@ export abstract class Task {
     description: string | undefined;
     isPresent: boolean;
     hoursForPreparing: number | undefined;
+    hoursForTransport: number | undefined;
     hoursInLocation: number | undefined;
     hoursDownload: number | undefined;
     hoursEditing: number | undefined;
     hoursExport: number | undefined;
+    totalHoursOnComputer: number | undefined;
+    totalHoursWorked: number | undefined;
     laborPrice: number | undefined;
     equipmentWearCost: number | undefined;
     softwareCost: number | undefined;
-    transportCost: number | undefined;
     totalPrice: number | undefined;
 
     constructor(taskType: TaskType, description: string | undefined = undefined, isPresent: boolean = true) {

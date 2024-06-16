@@ -40,27 +40,29 @@ export class PhotoEventService extends EventService{
     getHoursDownload = (photosMade: number) => photosMade * HOURS_DOWNLOAD_1_PHOTO;
     getHoursEditing = (taskType: TaskType, photosEdited: number) => photosEdited / this.getPhotosEditedInOneHour(taskType);
     getHoursExport = (photosDelivered: number) => photosDelivered * HOURS_DOWNLOAD_1_PHOTO;
+    getHoursOnComputer = (hoursDownload: number, hoursEditing: number, hoursExport: number) => hoursDownload + hoursEditing + hoursExport;
+    getHoursTotalWork = (hoursForPreparing: number, hoursForTransport: number, hoursInLocation: number, totalHoursOnComputer: number) => hoursForPreparing + hoursForTransport + hoursInLocation + totalHoursOnComputer;
 
-    getLaborPrice = (taskType: TaskType, hoursForPreparing: number, hoursDownload: number, hoursInLocation: number, hoursEditing: number, hoursExport: number): number =>
-        this.getLaborPriceForOneHour(taskType) * (hoursForPreparing + hoursDownload + hoursInLocation + hoursEditing + hoursExport);
-
+    getLaborPrice = (taskType: TaskType, totalHoursWorked: number): number => this.getLaborPriceForOneHour(taskType) * totalHoursWorked;
     getEquipmentWearCost = (photosMade: number) => photosMade * EQUIPMENT_WEAR_COST_1_PHOTO;
     getSoftwareCost = (photosDelivered: number | undefined) => 0;
-    getTotalPrice = (laborPrice: number, equipmentWearCost: number, softwareCost: number, transportCost: number) =>
-        laborPrice + equipmentWearCost + softwareCost + transportCost;
+    getTotalPrice = (laborPrice: number, equipmentWearCost: number, softwareCost: number) => laborPrice + equipmentWearCost + softwareCost;
 
     getTotal = (tasks: PhotoTask[]): PhotoTask =>
         tasks.reduce((total, task) => {
             total.hoursForPreparing = this.addNullableNumbers(total.hoursForPreparing, task.hoursForPreparing);
+            total.hoursForTransport = this.addNullableNumbers(total.hoursForTransport, task.hoursForTransport);
             total.hoursInLocation = this.addNullableNumbers(total.hoursInLocation, task.hoursInLocation);
             total.hoursDownload = this.addNullableNumbers(total.hoursDownload, task.hoursDownload);
             total.hoursEditing = this.addNullableNumbers(total.hoursEditing, task.hoursEditing);
             total.hoursExport = this.addNullableNumbers(total.hoursExport, task.hoursExport);
+            total.totalHoursOnComputer = this.addNullableNumbers(total.totalHoursOnComputer, task.totalHoursOnComputer);
+            total.totalHoursWorked = this.addNullableNumbers(total.totalHoursWorked, task.totalHoursWorked);
+            total.photosMade = this.addNullableNumbers(total.photosMade, task.photosMade);
             total.photosDelivered = this.addNullableNumbers(total.photosDelivered, task.photosDelivered);
             total.laborPrice = this.addNullableNumbers(total.laborPrice, task.laborPrice);
             total.equipmentWearCost = this.addNullableNumbers(total.equipmentWearCost, task.equipmentWearCost);
             total.softwareCost = this.addNullableNumbers(total.softwareCost, task.softwareCost);
-            total.transportCost = this.addNullableNumbers(total.transportCost, task.transportCost);
             total.totalPrice = this.addNullableNumbers(total.totalPrice, task.totalPrice);
             return total
         }, new PhotoTask(TaskType.TOTAL))
@@ -86,17 +88,19 @@ export class PhotoEventService extends EventService{
     private getTask = (taskType: TaskType, description: string | undefined, hoursInLocation: number, photosMade: number, photosDelivered: number): PhotoTask => {
         const task = new PhotoTask(taskType, description);
         task.hoursForPreparing = 0.5;
+        task.hoursForTransport = 0.5;
         task.hoursInLocation = hoursInLocation;
         task.photosMade = photosMade;
         task.photosDelivered = photosDelivered;
         task.hoursDownload = this.getHoursDownload(photosMade);
         task.hoursEditing = this.getHoursEditing(TaskType.HOME, photosDelivered);
         task.hoursExport = this.getHoursExport(photosDelivered);
-        task.laborPrice = this.getLaborPrice(taskType, task.hoursForPreparing, task.hoursDownload, task.hoursInLocation, task.hoursEditing, task.hoursExport);
+        task.totalHoursOnComputer = this.getHoursOnComputer(task.hoursDownload, task.hoursEditing, task.hoursExport);
+        task.totalHoursWorked = this.getHoursTotalWork(task.hoursForPreparing, task.hoursForTransport, hoursInLocation, task.totalHoursOnComputer);
+        task.laborPrice = this.getLaborPrice(taskType, task.totalHoursWorked);
         task.equipmentWearCost = this.getEquipmentWearCost(task.photosMade);
         task.softwareCost = this.getSoftwareCost(task.photosDelivered);
-        task.transportCost = 25;
-        task.totalPrice = this.getTotalPrice(task.laborPrice, task.equipmentWearCost, task.softwareCost, task.transportCost)
+        task.totalPrice = this.getTotalPrice(task.laborPrice, task.equipmentWearCost, task.softwareCost);
         return task;
     }
 

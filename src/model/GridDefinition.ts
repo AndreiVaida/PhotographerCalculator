@@ -15,14 +15,16 @@ enum Column {
     // Task
     Participate = "isPresent",
     HoursForPreparing = "hoursForPreparing",
+    HoursForTransport = "hoursForTransport",
     HoursInLocation = "hoursInLocation",
     HoursDownload = "hoursDownload",
     HoursEditing = "hoursEditing",
     HoursExport = "hoursExport",
+    HoursOnComputer = "totalHoursOnComputer",
+    HoursTotalWork = "totalHoursWorked",
     LaborPrice = "laborPrice",
     EquipmentWearCost = "equipmentWearCost",
     SoftwareCost = "softwareCost",
-    TransportCost = "transportCost",
     TotalPrice = "totalPrice",
 }
 
@@ -32,6 +34,7 @@ const taskNameValueGetter = (params: ValueGetterParams<PhotoTask>) => `${params.
  * Fields of {@link PhotoRow}
  */
 enum PhotoColumn {
+    PhotosMade = "photosMade",
     PhotosDelivered = "photosDelivered",
 }
 
@@ -48,14 +51,16 @@ enum VideoColumn {
 const columnTaskName: ColDef = { headerName: 'Activitate', valueGetter: taskNameValueGetter, width: 150, headerClass: "ag-left-aligned-header", cellStyle: { textAlign: "left" } };
 const columnParticipate: ColDef = { headerName: 'Particip', field: Column.Participate, width: 60 };
 const columnHoursForPreparing: ColDef = { headerName: 'Ore pregătiri', field: Column.HoursForPreparing, valueFormatter: decimalValueFormatter };
-const columnHoursInLocation: ColDef = { headerName: 'Ore acolo', field: Column.HoursInLocation, valueFormatter: decimalValueFormatter };
+const columnHoursForTransport: ColDef = { headerName: 'Ore transport', field: Column.HoursForTransport, valueFormatter: decimalValueFormatter };
+const columnHoursInLocation: ColDef = { headerName: 'Ore acolo', field: Column.HoursInLocation, valueFormatter: decimalValueFormatter, cellStyle: { fontWeight: "bold" } };
 const columnHoursDownload: ColDef = { headerName: 'Ore descărcare', field: Column.HoursDownload, valueFormatter: decimalValueFormatter };
 const columnHoursEditing: ColDef = { headerName: 'Ore editare', field: Column.HoursEditing, valueFormatter: decimalValueFormatter };
 const columnHoursExport: ColDef = { headerName: 'Ore export', field: Column.HoursExport, valueFormatter: decimalValueFormatter };
+const columnHoursOnComputer: ColDef = { headerName: 'Ore pe calculator', field: Column.HoursOnComputer, valueFormatter: decimalValueFormatter, cellStyle: { fontWeight: "bold" } };
+const columnHoursTotalWork: ColDef = { headerName: 'Total ore lucrate', field: Column.HoursTotalWork, valueFormatter: decimalValueFormatter, cellStyle: { fontWeight: "bold" } };
 const columnLaborPrice: ColDef = { headerName: 'Preț manoperă', field: Column.LaborPrice, valueFormatter: currencyValueFormatter };
 const columnEquipmentWearCost: ColDef = { headerName: 'Cost uzură aparatură', field: Column.EquipmentWearCost, valueFormatter: currencyValueFormatter };
 const columnSoftwareCost: ColDef = { headerName: 'Cost software', field: Column.SoftwareCost, valueFormatter: currencyValueFormatter };
-const columnTransportCost: ColDef = { headerName: 'Cost transport', field: Column.TransportCost, valueFormatter: currencyValueFormatter };
 const columnTotalPrice: ColDef = { headerName: 'Preț total', field: Column.TotalPrice, valueFormatter: currencyValueFormatter, cellStyle: { fontWeight: "bold" } };
 
 /**
@@ -65,14 +70,17 @@ export const photoColumnDefs: ColDef[] = [
     columnTaskName,
     columnParticipate,
     columnHoursForPreparing,
+    columnHoursForTransport,
     columnHoursInLocation,
+    { headerName: 'Fotografii realizate', field: PhotoColumn.PhotosMade },
     columnHoursDownload,
     columnHoursEditing,
+    { headerName: 'Fotografii livrate', field: PhotoColumn.PhotosDelivered, cellStyle: { fontWeight: "bold" } },
     columnHoursExport,
-    { headerName: 'Fotografii livrate', field: PhotoColumn.PhotosDelivered },
+    columnHoursOnComputer,
+    columnHoursTotalWork,
     columnLaborPrice,
     columnEquipmentWearCost,
-    columnTransportCost,
     columnTotalPrice,
 ].map(applyColumnStyle);
 
@@ -82,16 +90,17 @@ export const videoColumnDefs: ColDef[] = [
     columnParticipate,
     { headerName: 'Foto + Video', field: VideoColumn.IsPhotoAndVideo, width: 60, rowSpan: rowSpanFirstRow },
     columnHoursForPreparing,
+    columnHoursForTransport,
     columnHoursInLocation,
     columnHoursDownload,
-    { ...columnHoursEditing, headerName: 'Minute' },
-    { ...columnHoursExport, headerName: 'Ore editare' },
+    columnHoursEditing,
     { headerName: 'Ore editare intro, final etc.', field: VideoColumn.HoursGeneralEditing },
-    { headerName: 'Ore export', field: Column.HoursExport },
-    { ...columnLaborPrice, headerName: 'Preț manoperă' },
+    columnHoursExport,
+    columnHoursOnComputer,
+    columnHoursTotalWork,
+    columnLaborPrice,
     columnEquipmentWearCost,
     columnSoftwareCost,
-    columnTransportCost,
     columnTotalPrice,
 ].map(applyColumnStyle);
 
