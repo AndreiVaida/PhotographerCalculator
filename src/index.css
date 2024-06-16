@@ -11,3 +11,14 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.styleEditableCell:hover {
+  background-color: RGB(164, 222, 252);
+  cursor: text;
+}
+
+.ag-row .ag-cell {
+  display: flex;
+  justify-content: right;
+  align-items: center;
+}

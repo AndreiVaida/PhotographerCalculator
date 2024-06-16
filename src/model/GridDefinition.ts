@@ -48,11 +48,11 @@ enum VideoColumn {
     TotalFullMovie = "totalFullMovie",
 }
 
-const columnTaskName: ColDef = { headerName: 'Activitate', valueGetter: taskNameValueGetter, width: 150, headerClass: "ag-left-aligned-header", cellStyle: { textAlign: "left" } };
-const columnParticipate: ColDef = { headerName: 'Particip', field: Column.Participate, width: 60 };
-const columnHoursForPreparing: ColDef = { headerName: 'Ore pregătiri', field: Column.HoursForPreparing, valueFormatter: decimalValueFormatter };
-const columnHoursForTransport: ColDef = { headerName: 'Ore transport', field: Column.HoursForTransport, valueFormatter: decimalValueFormatter };
-const columnHoursInLocation: ColDef = { headerName: 'Ore acolo', field: Column.HoursInLocation, valueFormatter: decimalValueFormatter, cellStyle: { fontWeight: "bold" } };
+const columnTaskName: ColDef = { headerName: 'Activitate', valueGetter: taskNameValueGetter, width: 150, headerClass: "ag-left-aligned-header", cellStyle: { justifyContent: "left" } };
+const columnParticipate: ColDef = { headerName: 'Particip', field: Column.Participate, width: 60, cellRenderer: 'agCheckboxCellRenderer', cellEditor: 'agCheckboxCellEditor', cellStyle: { justifyContent: "center" }, editable: true };
+const columnHoursForPreparing: ColDef = { headerName: 'Ore pregătiri', field: Column.HoursForPreparing, valueFormatter: decimalValueFormatter, editable: true };
+const columnHoursForTransport: ColDef = { headerName: 'Ore transport', field: Column.HoursForTransport, valueFormatter: decimalValueFormatter, editable: true };
+const columnHoursInLocation: ColDef = { headerName: 'Ore acolo', field: Column.HoursInLocation, valueFormatter: decimalValueFormatter, cellStyle: { fontWeight: "bold" }, editable: true };
 const columnHoursDownload: ColDef = { headerName: 'Ore descărcare', field: Column.HoursDownload, valueFormatter: decimalValueFormatter };
 const columnHoursEditing: ColDef = { headerName: 'Ore editare', field: Column.HoursEditing, valueFormatter: decimalValueFormatter };
 const columnHoursExport: ColDef = { headerName: 'Ore export', field: Column.HoursExport, valueFormatter: decimalValueFormatter };
@@ -72,7 +72,7 @@ export const photoColumnDefs: ColDef[] = [
     columnHoursForPreparing,
     columnHoursForTransport,
     columnHoursInLocation,
-    { headerName: 'Fotografii realizate', field: PhotoColumn.PhotosMade },
+    { headerName: 'Fotografii realizate', field: PhotoColumn.PhotosMade, editable: true },
     columnHoursDownload,
     columnHoursEditing,
     { headerName: 'Fotografii livrate', field: PhotoColumn.PhotosDelivered, cellStyle: { fontWeight: "bold" } },

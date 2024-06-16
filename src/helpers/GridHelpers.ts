@@ -19,7 +19,6 @@ const formatInteger = (value: any) =>
         : value;
 
 export const currencyValueFormatter: ValueFormatterFunc = (params: ValueFormatterParams) => `${formatInteger(params.value)} Lei`
-
 export const applyColumnStyle = (colDef: ColDef): ColDef => {
     colDef.sortable = false;
     colDef.wrapHeaderText = true;
@@ -36,6 +35,10 @@ export const applyColumnStyle = (colDef: ColDef): ColDef => {
 
     if (!colDef.valueFormatter) {
         colDef.valueFormatter = integerValueFormatter
+    }
+
+    if (colDef.editable) {
+        colDef.cellClass = "styleEditableCell"
     }
 
     return colDef;
