@@ -1,4 +1,4 @@
-import { ColDef, ColDefField, RowSpanParams, ValueFormatterFunc, ValueFormatterParams } from "@ag-grid-community/core";
+import { ColDef, RowSpanParams, ValueFormatterFunc, ValueFormatterParams } from "@ag-grid-community/core";
 import { VideoTask } from "../model/Task";
 
 export const rowSpanFirstRow = (params: RowSpanParams<VideoTask>) => {
@@ -23,22 +23,22 @@ export const applyColumnStyle = (colDef: ColDef): ColDef => {
     colDef.sortable = false;
     colDef.wrapHeaderText = true;
     colDef.autoHeaderHeight = true;
-    colDef.cellStyle = { ...colDef?.cellStyle, padding: 5 }
+    colDef.cellStyle = { ...colDef?.cellStyle, padding: 5 };
 
     if (!colDef.width)
         colDef.width = 100;
 
     if (!colDef.headerClass) {
-        colDef.headerClass = "ag-right-aligned-header"
-        colDef.cellStyle = { ...colDef.cellStyle, textAlign: "right" }
+        colDef.headerClass = "ag-right-aligned-header";
+        colDef.cellStyle = { ...colDef.cellStyle, textAlign: "right" };
     }
 
     if (!colDef.valueFormatter) {
-        colDef.valueFormatter = integerValueFormatter
+        colDef.valueFormatter = integerValueFormatter;
     }
 
     if (colDef.editable) {
-        colDef.cellClass = "styleEditableCell"
+        colDef.cellClass = "editableCell";
     }
 
     return colDef;

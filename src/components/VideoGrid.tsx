@@ -5,7 +5,7 @@ import { ColDef } from "@ag-grid-community/core";
 import { EventService } from "../services/EventService";
 import { EventServiceContext } from "../helpers/ApplicationContext";
 import '@ag-grid-community/styles/ag-grid.css';
-import '@ag-grid-community/styles/ag-theme-alpine.css';
+import '@ag-grid-community/styles/ag-theme-quartz.css';
 import { VideoTask } from "../model/Task";
 
 export const VideoGrid = (props: VideoGridProps) => {
@@ -19,7 +19,7 @@ export const VideoGrid = (props: VideoGridProps) => {
     }
 
     return (
-        <div className="ag-theme-alpine" style={{height: props.height}}>
+        <div className="ag-theme-quartz" style={{height: props.height}}>
             <AgGridReact
                 ref={videoGridRef}
                 columnDefs={columnDefs}
