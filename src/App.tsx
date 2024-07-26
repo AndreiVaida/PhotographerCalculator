@@ -16,10 +16,10 @@ function App() {
     return (
         <div className="App">
             <header className="App-header">
-                Calculator preț eveniment
+                Calculator eveniment
             </header>
             <EventServiceContext.Provider value={photoEventService}>
-                <PhotoGrid height={"500px"} event={photoEvent}/>
+                <PhotoGrid height={"490px"} event={photoEvent}/>
                 {/*<VideoGrid height={"300px"} event={eventService.getDemoVideoEvent()}/>*/}
             </EventServiceContext.Provider>
         </div>

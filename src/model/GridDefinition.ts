@@ -49,8 +49,8 @@ enum VideoColumn {
 }
 
 const columnTaskName: ColDef = { headerName: 'Activitate', valueGetter: taskNameValueGetter, width: 150, headerClass: "ag-left-aligned-header", cellStyle: { justifyContent: "left" } };
-const columnParticipate: ColDef = { headerName: 'Particip', field: Column.Participate, width: 60, cellRenderer: 'agCheckboxCellRenderer', cellEditor: 'agCheckboxCellEditor', cellStyle: { justifyContent: "center" }, editable: true };
-const columnHoursForPreparing: ColDef = { headerName: 'Ore pregătiri', field: Column.HoursForPreparing, valueFormatter: decimalValueFormatter, editable: true };
+const columnParticipate: ColDef = { headerName: 'Particip', field: Column.Participate, width: 60, cellRenderer: 'agCheckboxCellRenderer', cellEditor: 'agCheckboxCellEditor', cellStyle: { justifyContent: "center" }, headerClass: "smallHeaderPaddign", editable: true };
+const columnHoursForPreparing: ColDef = { headerName: 'Ore pregătiri', field: Column.HoursForPreparing, valueFormatter: decimalValueFormatter, editable: true, };
 const columnHoursForTransport: ColDef = { headerName: 'Ore transport', field: Column.HoursForTransport, valueFormatter: decimalValueFormatter, editable: true };
 const columnHoursInLocation: ColDef = { headerName: 'Ore acolo', field: Column.HoursInLocation, valueFormatter: decimalValueFormatter, cellStyle: { fontWeight: "bold" }, editable: true };
 const columnHoursDownload: ColDef = { headerName: 'Ore descărcare', field: Column.HoursDownload, valueFormatter: decimalValueFormatter };
@@ -108,7 +108,7 @@ export abstract class GridProps<T extends Event<Task>> {
     height: string;
     event: T;
 
-   protected constructor(height: string, event: T) {
+    protected constructor(height: string, event: T) {
         this.height = height;
         this.event = event;
     }

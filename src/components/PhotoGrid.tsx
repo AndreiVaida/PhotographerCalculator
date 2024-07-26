@@ -23,7 +23,7 @@ export const PhotoGrid = (props: PhotoGridProps) => {
     }
 
     return (
-        <div className="ag-theme-quartz" style={{height: props.height}}>
+        <div className="ag-theme-quartz-dark" style={{height: props.height}}>
             <AgGridReact
                 ref={photoGridRef}
                 columnDefs={columnDefs}

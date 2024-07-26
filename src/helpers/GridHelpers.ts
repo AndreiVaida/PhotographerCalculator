@@ -38,7 +38,9 @@ export const applyColumnStyle = (colDef: ColDef): ColDef => {
     }
 
     if (colDef.editable) {
-        colDef.cellClass = "editableCell";
+        colDef.cellClass = `editableCell`;
+    } else {
+        colDef.cellClass = `readonlyCell`;
     }
 
     return colDef;
