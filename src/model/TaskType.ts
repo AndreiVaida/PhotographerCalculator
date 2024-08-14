@@ -1,9 +1,10 @@
 export enum TaskType {
     HOME = "Acasă",
-    PHOTO_SHOOT = "Ședință foto",
     MARITAL_STATUS = "Stare civilă",
     CHURCH = "Biserică",
+    PHOTO_SHOOT = "Ședință foto",
     RESTAURANT = "Restaurant",
     SUMMARY = "Rezumat",
+    GENERAL = "Pregătiri generale",
     TOTAL = "Total"
 }

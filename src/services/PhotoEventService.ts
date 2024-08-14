@@ -2,24 +2,27 @@ import { PhotoEvent } from "../model/Event";
 import { PhotoTask } from "../model/Task";
 import { TaskType } from "../model/TaskType";
 import { EventService } from "./EventService";
+import {
+    EQUIPMENT_WEAR_COST_1_PHOTO,
+    HOURS_DOWNLOAD_1_PHOTO,
+    HOURS_FOR_DISCUSSIONS,
+    HOURS_FOR_TEAR_DOWN,
+    HOURS_FOR_TEAR_UP,
+    LABOR_PRICE_FOR_ONE_HOUR, PhotosDelivered, PhotosEditedIn1Hour, PhotosMadeFor1Picture
+} from "../helpers/Constants";
 
-const LOADING_PHOTOS_MULTIPLE = 1.3;
-const HOURS_DOWNLOAD_1_PHOTO = 0.001 * LOADING_PHOTOS_MULTIPLE;
-const ACTUAL_EQUIPMENT_WEAR_COST_1_PHOTO = 0.16;
-const NEW_EQUIPMENT_COST_MULTIPLE = 1.3;
-const EQUIPMENT_WEAR_COST_1_PHOTO = ACTUAL_EQUIPMENT_WEAR_COST_1_PHOTO * NEW_EQUIPMENT_COST_MULTIPLE; // Lei
-
-export class PhotoEventService extends EventService{
+export class PhotoEventService extends EventService {
     getNewWeddingEvent(): PhotoEvent {
-        const homeAtGroom = this.getHomeTask("la mire", 70);
-        const homeAtGoodparents = this.getHomeTask("la nași", 40, 0.5);
-        const homeAtGoodparents2 = this.getHomeTask("la nași 2", 40, 0.5);
-        const homeAtBride = this.getHomeTask("la mireasă", 170);
+        const homeAtGroom = this.getHomeTask("la mire", PhotosDelivered.HOME_GROOM);
+        const homeAtGoodparents = this.getHomeTask("la nași", PhotosDelivered.HOME_GODPARENTS, 0.5);
+        const homeAtGoodparents2 = this.getHomeTask("la nași 2", PhotosDelivered.HOME_GODPARENTS, 0.5);
+        const homeAtBride = this.getHomeTask("la mireasă", PhotosDelivered.HOME_BRIDE);
         const maritalStatus = this.getMaritalStatusTask();
-        const wedding = this.getChurchTask(200);
-        const photoShoot = this.getPhotoShootTask(160);
-        const photoShoot2 = this.getPhotoShootTask(80, "2", 0.5);
-        const party = this.getRestaurantTask();
+        const wedding = this.getChurchTask(PhotosDelivered.CHURCH_WEDDING);
+        const photoShoot = this.getPhotoShootTask(PhotosDelivered.PHOTO_SHOOT_BIG);
+        const photoShoot2 = this.getPhotoShootTask(PhotosDelivered.PHOTO_SHOOT, "2", 0.5);
+        const party = this.getRestaurantTask(PhotosDelivered.RESTAURANT_WEDDING);
+        const generalWork = this.getGeneralWorkTask();
 
         const tasks: PhotoTask[] = [
             homeAtGroom,
@@ -30,7 +33,8 @@ export class PhotoEventService extends EventService{
             wedding,
             photoShoot,
             photoShoot2,
-            party
+            party,
+            generalWork
         ];
         const total = this.getTotal(tasks);
 
@@ -43,7 +47,7 @@ export class PhotoEventService extends EventService{
     getHoursOnComputer = (hoursDownload: number, hoursEditing: number, hoursExport: number) => hoursDownload + hoursEditing + hoursExport;
     getHoursTotalWork = (hoursForPreparing: number, hoursForTransport: number, hoursInLocation: number, totalHoursOnComputer: number) => hoursForPreparing + hoursForTransport + hoursInLocation + totalHoursOnComputer;
 
-    getLaborPrice = (taskType: TaskType, totalHoursWorked: number): number => this.getLaborPriceForOneHour(taskType) * totalHoursWorked;
+    getLaborPrice = (taskType: TaskType, totalHoursWorked: number): number => LABOR_PRICE_FOR_ONE_HOUR * totalHoursWorked;
     getEquipmentWearCost = (photosMade: number) => photosMade * EQUIPMENT_WEAR_COST_1_PHOTO;
     getSoftwareCost = (photosDelivered: number | undefined) => 0;
     getTotalPrice = (laborPrice: number, equipmentWearCost: number, softwareCost: number) => laborPrice + equipmentWearCost + softwareCost;
@@ -69,19 +73,12 @@ export class PhotoEventService extends EventService{
 
     private getPhotosEditedInOneHour = (taskType: TaskType): number => {
         switch (taskType) {
-            case TaskType.HOME: return 60;
-            case TaskType.PHOTO_SHOOT: return 60;
-            case TaskType.MARITAL_STATUS: return 70;
-            case TaskType.CHURCH: return 60;
-            case TaskType.RESTAURANT:  return 70;
+            case TaskType.HOME: return PhotosEditedIn1Hour.HOME;
+            case TaskType.MARITAL_STATUS: return PhotosEditedIn1Hour.MARITAL_STATUS;
+            case TaskType.CHURCH: return PhotosEditedIn1Hour.CHURCH;
+            case TaskType.PHOTO_SHOOT: return PhotosEditedIn1Hour.PHOTO_SHOOT;
+            case TaskType.RESTAURANT: return PhotosEditedIn1Hour.RESTAURANT;
             default: return 60;
-        }
-    }
-
-    private getLaborPriceForOneHour = (taskType: TaskType): number => {
-        switch (taskType) {
-            case TaskType.RESTAURANT:  return 50;
-            default: return 70;
         }
     }
 
@@ -105,19 +102,25 @@ export class PhotoEventService extends EventService{
     }
 
     private getHomeTask = (description: string, photosDelivered: number, hoursInLocation = 1) =>
-        this.getTask(TaskType.HOME, description, hoursInLocation, photosDelivered * 2.5, photosDelivered);
+        this.getTask(TaskType.HOME, description, hoursInLocation, photosDelivered * PhotosMadeFor1Picture.HOME, photosDelivered);
 
     private getMaritalStatusTask = () =>
-        this.getTask(TaskType.MARITAL_STATUS, undefined, 1, 700, 180);
+        this.getTask(TaskType.MARITAL_STATUS, undefined, 1, PhotosDelivered.MARITAL_STATUS * PhotosMadeFor1Picture.MARITAL_STATUS, PhotosDelivered.MARITAL_STATUS);
 
     private getChurchTask = (photosDelivered: number) =>
-        this.getTask(TaskType.CHURCH, undefined, 1, photosDelivered * 3, photosDelivered);
+        this.getTask(TaskType.CHURCH, undefined, 1, photosDelivered * PhotosMadeFor1Picture.CHURCH, photosDelivered);
 
     private getPhotoShootTask = (photosDelivered: number, description?: string, hoursInLocation = 1) =>
-        this.getTask(TaskType.PHOTO_SHOOT, description, hoursInLocation, photosDelivered * 2.5, photosDelivered);
+        this.getTask(TaskType.PHOTO_SHOOT, description, hoursInLocation, photosDelivered * PhotosMadeFor1Picture.PHOTO_SHOOT, photosDelivered);
 
-    private getRestaurantTask = (photosDelivered: number = 500, hoursInLocation = 8) =>
-        this.getTask(TaskType.RESTAURANT, undefined, hoursInLocation, photosDelivered * 3, photosDelivered);
+    private getRestaurantTask = (photosDelivered: number, hoursInLocation = 8) =>
+        this.getTask(TaskType.RESTAURANT, undefined, hoursInLocation, photosDelivered * PhotosMadeFor1Picture.RESTAURANT, photosDelivered);
+
+    private getGeneralWorkTask = () => {
+        const task = new PhotoTask(TaskType.GENERAL);
+        task.hoursForPreparing = HOURS_FOR_DISCUSSIONS + HOURS_FOR_TEAR_UP + HOURS_FOR_TEAR_DOWN;
+        return task;
+    }
 
     private addNullableNumbers = (number1: number | undefined, number2: number | undefined): number | undefined => {
         if (number1 && number2) return number1 + number2;
